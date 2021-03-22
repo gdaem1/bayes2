@@ -131,18 +131,18 @@ shinyServer(function(input, output) {
           sprintf('\n%.d', retention_A),
           sprintf('\n%.2g%%', conv_A*100),
           sprintf('\n%.2g%%', convret_A*100),
-          sprintf('\n%.2g €', arppu_A),
-          sprintf('\n%.2g €', arpu_A),
-          sprintf('[%.2g €, \n%.2g €]', hdi_A[1], hdi_A[2])
+          sprintf('\n%.2g â¬', arppu_A),
+          sprintf('\n%.2g â¬', arpu_A),
+          sprintf('[%.2g â¬, \n%.2g â¬]', hdi_A[1], hdi_A[2])
         ),
         B = c(
           sprintf('\n%.d', sample_B),
           sprintf('\n%.d', retention_B),
           sprintf('\n%.2g%%', conv_B*100),
           sprintf('\n%.2g%%', convret_B*100),
-          sprintf('\n%.2g €', arppu_B),
-          sprintf('\n%.2g €', arpu_B),
-          sprintf('[%.2g €, \n%.2g €]', hdi_B[1], hdi_B[2])
+          sprintf('\n%.2g â¬', arppu_B),
+          sprintf('\n%.2g â¬', arpu_B),
+          sprintf('[%.2g â¬, \n%.2g â¬]', hdi_B[1], hdi_B[2])
         )
       )
       colnames(tab) <- c(' ', 'A', 'B')
@@ -205,5 +205,43 @@ shinyServer(function(input, output) {
       tab
     }, spacing = 'xs')
     
+    output$table5 <- renderTable({
+      tab <- data.frame(
+        better = c(
+          paste('On ', input$testday, ', the Control group had a ', round(res$convProbAbeatsB*100, digits=2), '% greater conversion rate than Group B.', sep=''),
+          paste('On ', input$testday, ', Group B had a ', round(res$convProbBbeatsA*100, digits=2), '% greater conversion rate compared to the Control group.', sep='')
+          
+        )
+      )
+      colnames(tab) <- c(' ')
+      tab
+    }, spacing = 'xs')
+    
+    
+    output$table6 <- renderTable({
+      tab <- data.frame(
+        better = c(
+          paste('On ', input$testday, ', the Control group had a ', round(res$arpuProbAbeatsB*100,digits=2), '% greater lifetime value than Group B.', sep=''),
+          paste('On ', input$testday, ', Group B had a ', round(res$arpuProbBbeatsA*100, digits=2), '% greater lifetime value compared to the Control group.', sep='')
+        )
+      )
+      colnames(tab) <- c(' ')
+      tab
+    }, spacing = 'xs')
+    
+    
+    output$table7 <- renderTable({
+      tab <- data.frame(
+        better = c(
+          paste('On ', input$testday,', the Control group had a ', round(((convret_A-convret_B)/convret_B)*100,digits=2), '% greater retention rate compared to Group B (', round(prob_B_beats_A(alpharet_B, betaret_B, alpharet_A, betaret_A)*100,digits =0),
+                '% confidence).', sep=''),
+          
+          paste('On ', input$testday,', Group B had a ', round(((convret_B-convret_A)/convret_A)*100,digits=2), '% greater retention rate compared to the Control group (', round(prob_A_beats_B(alpharet_A, betaret_A, alpharet_B, betaret_B)*100,digits =0),
+                '% confidence).', sep='')
+        )
+      )
+      colnames(tab) <- c(' ')
+      tab
+    }, spacing = 'xs')
   })
 })
