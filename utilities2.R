@@ -37,8 +37,8 @@ bayes_arpu <- function(
   kB, thetaB,
   MSamples
 ) {
-  if(alphaA <= 0 || betaA <= 0 || alphaB <= 0 || betaB <= 0 || 
-     kA <= 0 || thetaA <= 0 || kB <= 0 || thetaB <= 0) {
+  if(alphaA <= 0 || betaA <= 0 || alphaB <= 0 || betaB <= 0 ||
+     kA <= 0 || thetaA <= 0 || kB <= 0 || thetaB <= 0 ) {
     probBbeatsA <- 0
     expLossA <- 0
     expLossB <- 0
@@ -82,6 +82,7 @@ bayes_arpu <- function(
     diffTemp <- lambdaA/omegaA - lambdaB/omegaB
     arpuExpLossA_AB2 <- sum(diffTemp*(diffTemp > 0))/MSamples
     arpuExpLossB_AB2 <- sum(-diffTemp*(-diffTemp > 0))/MSamples
+    
   }
   list(
     convProbBbeatsA = convProbBbeatsA,
@@ -100,7 +101,6 @@ bayes_arpu <- function(
     
     arpuProbBbeatsA = arpuProbBbeatsA,
     arpuProbAbeatsB = arpuProbAbeatsB,
-    
     arpuExpLossA_AB = arpuExpLossA_AB,
     arpuExpLossB_AB = arpuExpLossB_AB,
     arpuExpLossA_AB2 = arpuExpLossA_AB2,
